@@ -3,6 +3,10 @@ import RootLayout from "./layouts/root-layout"
 import ProductsPage from "./pages/products/products"
 import NewProductPage from "./pages/products/new-product"
 import { action as newProductAction } from "./actions/new-product-action"
+import { loader as productsLoader } from "./loaders/products-loader"
+import { loader as getProductLoader } from "./loaders/get-product-loader"
+import { action as editProductAction } from "./actions/edit-product-action"
+import EditProductPage from "./pages/products/edit-product"
 
 export const router = createBrowserRouter([
   {
@@ -12,12 +16,19 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <ProductsPage />,
+        loader: productsLoader
       },
       {
         path: "products/new",
         element: <NewProductPage />,
         action: newProductAction,
-      }
+      },
+      {
+        path: "products/:id/edit",
+        element: <EditProductPage />,
+        loader: getProductLoader,
+        action: editProductAction
+      },
     ]
   }
 ])

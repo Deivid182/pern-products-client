@@ -1,13 +1,14 @@
-import { Form, useNavigate } from "react-router-dom";
+import { Form, useFetcher, useNavigate } from "react-router-dom";
 import type { Product } from "../../types";
 import { formatCurrency } from "../../helpers";
 type Props = {
-  item: Product
-}
+  item: Product;
+};
 
 const ProductDetails: React.FC<Props> = ({ item }) => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
+  const fetcher = useFetcher()
 
   return (
     <tr className="border-b border-gray-200">
@@ -18,7 +19,18 @@ const ProductDetails: React.FC<Props> = ({ item }) => {
         {item.name}
       </th>
       <td className="px-6 py-4">{formatCurrency(item.price)}</td>
-      <td className="px-6 py-4 bg-gray-50">{item.available ? "Available" : "No Available"}</td>
+      <td className="px-6 py-4 bg-gray-50">
+        <fetcher.Form method="POST">
+          <button
+            type="submit"
+            name="id"
+            value={item.id.toString()}
+            className={`bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ${item.available ? 'text-slate-800' : 'text-red-600'}`}
+          >
+            {item.available ? "In Stock" : "Out of stock"}
+          </button>
+        </fetcher.Form>
+      </td>
       <td className="px-6 py-4 flex items-center gap-5">
         <button
           onClick={() => navigate(`products/${item.id}/edit`)}
@@ -26,7 +38,15 @@ const ProductDetails: React.FC<Props> = ({ item }) => {
         >
           Edit
         </button>
-        <Form>
+        <Form
+          method="POST"
+          action={`/products/${item.id}/delete`}
+          onSubmit={(e) => {
+            if (!window.confirm("Are you sure?")) {
+              e.preventDefault();
+            }
+          }}
+        >
           <button
             type="submit"
             className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"

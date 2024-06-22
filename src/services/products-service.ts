@@ -74,3 +74,20 @@ export async function editProduct(data: ProductData, id: Product['id']) {
     console.log(error)
   }
 }
+
+export async function deleteProduct(id: Product['id']) {
+  try  {
+    await axios.delete(`${url}/products/${id}`)
+  } catch (error)  {
+    console.log(error)
+  }
+}
+
+export async function updateProductAvailable(id: Product['id']) {
+
+  try {
+    await axios.patch(`${url}/products/${id}`)
+  } catch (error) {
+    console.log(error)
+  }
+}

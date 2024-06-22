@@ -6,6 +6,8 @@ import { action as newProductAction } from "./actions/new-product-action"
 import { loader as productsLoader } from "./loaders/products-loader"
 import { loader as getProductLoader } from "./loaders/get-product-loader"
 import { action as editProductAction } from "./actions/edit-product-action"
+import { action as deleteProductAction } from "./actions/delete-product-action"
+import { action as updateAvailableAction } from "./actions/update-available-action"
 import EditProductPage from "./pages/products/edit-product"
 
 export const router = createBrowserRouter([
@@ -16,7 +18,8 @@ export const router = createBrowserRouter([
       {
         index: true,
         element: <ProductsPage />,
-        loader: productsLoader
+        loader: productsLoader,
+        action: updateAvailableAction
       },
       {
         path: "products/new",
@@ -28,6 +31,10 @@ export const router = createBrowserRouter([
         element: <EditProductPage />,
         loader: getProductLoader,
         action: editProductAction
+      },
+      {
+        path: "products/:id/delete",
+        action: deleteProductAction
       },
     ]
   }
